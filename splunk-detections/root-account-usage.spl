@@ -1,0 +1,8 @@
+/ Root Account Usage Detection
+/ Detects any API activity from the root account
+/ Risk: Root account usage indicates potential account compromise or policy violation
+/ Recommended: Alert immediately, investigate source IP and action taken
+
+index=* sourcetype="aws:cloudtrail" userIdentity.type=Root
+| stats count by userIdentity.arn, eventName, sourceIPAddress
+| sort - count
