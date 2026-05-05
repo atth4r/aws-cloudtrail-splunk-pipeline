@@ -1,0 +1,9 @@
+/ IAM Privilege Escalation Detection
+/ Detects attempts to escalate privileges through IAM policy modifications or access key creation
+/ Risk: Attacker or insider threat gaining elevated permissions
+/ MITRE ATT&CK: Privilege Escalation (TA0004)
+/ Recommended: Alert immediately, verify if change was authorized
+
+index=* sourcetype="aws:cloudtrail" eventName IN ("AttachUserPolicy","CreateAccessKey","PutUserPolicy")
+| stats count by userIdentity.userName, eventName, sourceIPAddress
+| sort - count
