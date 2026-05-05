@@ -1,0 +1,9 @@
+/ S3 Public Access Setting Changed Detection
+/ Detects when public access settings on S3 buckets are modified
+/ Risk: Misconfiguration exposing sensitive data to the public internet
+/ MITRE ATT&CK: Defense Evasion (TA0005)
+/ Recommended: Alert immediately, verify if change was authorized and revert if not
+
+index=* sourcetype="aws:cloudtrail" eventName="PutBucketPublicAccessBlock"
+| table eventTime, userIdentity.userName, requestParameters
+| sort - eventTime
